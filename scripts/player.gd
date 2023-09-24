@@ -47,11 +47,23 @@ func play_move_amination(is_moving):
 	match dir:
 		DIRECTION.RIGHT:
 			anim.flip_h = false
-			is_moving if anim.play("side_walk") else anim.play("side_idle")
+			if is_moving:
+				anim.play("side_walk") 
+			else:
+				anim.play("side_idle")
 		DIRECTION.LEFT:
 			anim.flip_h = true
-			is_moving if anim.play("side_walk") else anim.play("side_idle")
+			if is_moving:
+				anim.play("side_walk")
+			else:
+				anim.play("side_idle")
 		DIRECTION.UP:
-			is_moving if anim.play("back_walk") else anim.play("back_idle")
+			if is_moving:
+				anim.play("back_walk")
+			else:
+				anim.play("back_idle")
 		DIRECTION.DOWN:
-			is_moving if anim.play("front_walk") else anim.play("front_idle")
+			if is_moving:
+				anim.play("front_walk")
+			else:
+				anim.play("front_idle")
