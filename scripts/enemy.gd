@@ -1,11 +1,12 @@
 extends CharacterBody2D
 
 const SPEED = 40
+const MAX_HEALTH = 100
 var is_chasing = false
 var player = null
 
 var player_in_range = false
-var health = 100
+var health = MAX_HEALTH
 var alive = true
 var can_take_damage = true
 
@@ -15,6 +16,7 @@ func _ready():
 func _physics_process(delta):
 	
 	handle_attack()
+	update_healthbar()
 	
 	if is_chasing:
 		position += (player.position - position) / SPEED
@@ -57,3 +59,12 @@ func handle_attack():
 
 func _on_take_damage_cooldown_timeout():
 	can_take_damage = true
+
+func update_healthbar():
+	var healthbar = $health_bar
+	healthbar.value = health
+	
+	if health >= MAX_HEALTH:
+		healthbar.visible = false
+	else:
+		healthbar.visible = true

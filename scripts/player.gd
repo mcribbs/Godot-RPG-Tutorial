@@ -3,23 +3,26 @@ extends CharacterBody2D
 enum DIRECTION {RIGHT, LEFT, UP, DOWN}
 
 const SPEED = 100
+const MAX_HEALTH = 200
 var current_direction
 
 var enemy_in_range = false
 var enemy_out_of_cooldown = true
-var health = 200
+var health = MAX_HEALTH
 var alive = true
 
 var is_attack_in_progress = false
 
 func _ready():
 	$AnimatedSprite2D.play("front_idle")
+	$health_bar.max_value = MAX_HEALTH
 
 func _physics_process(delta):
 	player_movement(delta)
 	handle_enemy_attack()
 	attack()
 	current_camera()
+	update_healthbar()
 	
 	if health <= 0:
 		alive = false
@@ -144,3 +147,21 @@ func current_camera():
 	elif Global.current_scene == "cliffside":
 		$world_camera.enabled = false
 		$cliffside_camera.enabled = true
+
+func update_healthbar():
+	var healthbar = $health_bar
+	healthbar.value = health
+	
+	if health >= MAX_HEALTH:
+		healthbar.visible = false
+	else:
+		healthbar.visible = true
+
+
+func _on_regen_timer_timeout():
+	if health < MAX_HEALTH:
+		health = health + 20
+	if health > MAX_HEALTH:
+		health = MAX_HEALTH
+	if health <= 0:
+		health = 0
