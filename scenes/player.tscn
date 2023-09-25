@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://ck74j85m3eoki"]
+[gd_scene load_steps=57 format=3 uid="uid://ck74j85m3eoki"]
 
 [ext_resource type="Texture2D" uid="uid://ky3xop8cdnog" path="res://art/mystic_woods_free_2.1/sprites/characters/player.png" id="1_8apbo"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_iaot1"]
@@ -416,6 +416,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_ewrhm"]
 radius = 3.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_p0dof"]
+radius = 14.0
+
 [node name="player" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_layer = 3
@@ -430,3 +433,19 @@ offset = Vector2(0, -15)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 0)
 shape = SubResource("CircleShape2D_ewrhm")
+
+[node name="hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, -7)
+shape = SubResource("CircleShape2D_p0dof")
+
+[node name="enemy_attack_cooldown" type="Timer" parent="."]
+
+[node name="attack_timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="timeout" from="enemy_attack_cooldown" to="." method="_on_enemy_attack_cooldown_timeout"]
+[connection signal="timeout" from="attack_timer" to="." method="_on_attack_timer_timeout"]

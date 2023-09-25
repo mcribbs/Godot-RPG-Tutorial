@@ -1,6 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://cps81ljyojvh1"]
+[gd_scene load_steps=22 format=3 uid="uid://cps81ljyojvh1"]
 
-[ext_resource type="Script" path="res://enemy.gd" id="1_nseek"]
+[ext_resource type="Script" path="res://scripts/enemy.gd" id="1_wsllr"]
 [ext_resource type="Texture2D" uid="uid://dqte3bb3awfja" path="res://art/mystic_woods_free_2.1/sprites/characters/slime.png" id="2_tchkb"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oo015"]
@@ -132,9 +132,12 @@ radius = 52.0865
 [sub_resource type="CircleShape2D" id="CircleShape2D_vkq84"]
 radius = 5.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_juvbk"]
+radius = 13.0
+
 [node name="enemy" type="CharacterBody2D"]
 position = Vector2(0, -6)
-script = ExtResource("1_nseek")
+script = ExtResource("1_wsllr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_aaysr")
@@ -152,5 +155,16 @@ shape = SubResource("CircleShape2D_hyhde")
 position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_vkq84")
 
+[node name="hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_juvbk")
+
+[node name="take_damage_cooldown" type="Timer" parent="hitbox"]
+
 [connection signal="body_entered" from="AnimatedSprite2D/detection_area" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="AnimatedSprite2D/detection_area" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="timeout" from="hitbox/take_damage_cooldown" to="." method="_on_take_damage_cooldown_timeout"]
