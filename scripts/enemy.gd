@@ -47,7 +47,7 @@ func _on_hitbox_body_exited(body):
 		player_in_range = false
 
 func handle_attack():
-	if player_in_range and global.player_current_attack and can_take_damage:
+	if player_in_range and Global.player_current_attack and can_take_damage:
 		health = health - 20
 		$hitbox/take_damage_cooldown.start()
 		can_take_damage = false

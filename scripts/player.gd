@@ -19,6 +19,7 @@ func _physics_process(delta):
 	player_movement(delta)
 	handle_enemy_attack()
 	attack()
+	current_camera()
 	
 	if health <= 0:
 		alive = false
@@ -113,7 +114,7 @@ func attack():
 	var dir = current_direction
 	
 	if Input.is_action_just_pressed("attack"):
-		global.player_current_attack = true
+		Global.player_current_attack = true
 		is_attack_in_progress = true
 		match dir:
 			DIRECTION.RIGHT:
@@ -133,5 +134,13 @@ func attack():
 
 func _on_attack_timer_timeout():
 	$attack_timer.stop()
-	global.player_current_attack = false
+	Global.player_current_attack = false
 	is_attack_in_progress = false
+
+func current_camera():
+	if Global.current_scene == "world":
+		$world_camera.enabled = true
+		$cliffside_camera.enabled = false
+	elif Global.current_scene == "cliffside":
+		$world_camera.enabled = false
+		$cliffside_camera.enabled = true
